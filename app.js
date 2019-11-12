@@ -1,5 +1,9 @@
 //$(document).ready(function(){
-
+var sanitizeHTML = function (str) {
+	var temp = document.createElement('div');
+	temp.textContent = str;
+	return temp.innerHTML;
+};
 document.addEventListener('click', function (event) {
 
 	if (event.target.matches('#Search')) {
@@ -7,25 +11,29 @@ document.addEventListener('click', function (event) {
 		
 				var httpRequest = new XMLHttpRequest();
 var url = "http://localhost:8080/superheroes.php";
-
+var guy = sanitizeHTML(document.getElementById("intel").value);
 
 httpRequest.onreadystatechange = function(){
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		console.log(httpRequest.status);
 		//alert(httpRequest.status);
 	if (httpRequest.status === 200) {
-	var response = httpRequest.responseText;
-	alert(response);
+	
+	//alert(guy);
+	document.getElementById("result").innerHTML = this.responseText;
+	
+	
+	
 	} else {
 	alert('There was a problem with the request.');
 	}
 	}}
-httpRequest.open('GET', url);
+httpRequest.open("GET", url +"?query="+guy, true);
 httpRequest.send();
 			
 			}
     }, false);
-
+//htmlspecialchars - use this  to sanitize input
 
 
 
@@ -43,29 +51,3 @@ httpRequest.send();
 
 });*/
 //	}
-/*function getHeroes() {
-	if (httpRequest.readyState === XMLHttpRequest.DONE) {
-		console.log(httpRequest.status);
-		//alert(httpRequest.status);
-	if (httpRequest.status === 200) {
-	var response = httpRequest.responseText;
-	alert(response);
-	} else {
-	alert('There was a problem with the request.');
-	}
-	}
-}
-})
-/*
-crossDomain: true;
-    dataType: 'jsonp';
-fetch('http://localhost:8080/superheroes.php')
-.then(response => response.text())
-.then(data => {
-// Here's some data!
-alert(data);
-console.log(data)
-})
-.catch(error => {
-console.log(error);
-});*/
